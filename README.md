@@ -3,6 +3,7 @@
 I want to make a simple pong game for practice
 
 **Steps to develop Pong**
+
 	1. Create a blank screen & Game loop
 	2. Draw the paddles and the ball
 	3. Move the ball around
