@@ -8,8 +8,8 @@ int main()
 	// Initialize SDL components
 	SDL_Init(SDL_INIT_VIDEO);
 
-	SDL_Window* window = SDL_CreateWindow("Pong", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
+	SDL_Window* window = SDL_CreateWindow("Pong", WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
 
 	// Game logic
 	{
@@ -19,15 +19,15 @@ int main()
 		while (running) 
 		{
 			SDL_Event event;
-			while (SDL_PollEvent(& event))
+			while (SDL_PollEvent(&event))
 			{
-				if (event.type == SDL_QUIT)
+				if (event.type == SDL_EVENT_QUIT)
 				{
 					running = false;
 				}
-				else if (event.type == SDL_KEYDOWN)
+				else if (event.type == SDL_EVENT_KEY_DOWN)
 				{
-					if (event.key.keysym.sym == SDLK_ESCAPE)
+					if (event.key.key == SDLK_ESCAPE)
 					{
 						running = false;
 					}
@@ -45,7 +45,7 @@ int main()
 			{
 				if (y % 5 == 0)
 				{
-					SDL_RenderDrawPoint(renderer, WINDOW_WIDTH / 2, y);
+					SDL_RenderPoint(renderer, WINDOW_WIDTH / 2, y);
 				}
 			}
 			
