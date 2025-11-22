@@ -55,6 +55,6 @@ public:
 		SDL_RenderFillRect(renderer, &rect);
 	}
 
-	Vect2 position;
+	Vec2 position;
 	SDL_Rect rect{};
 };
