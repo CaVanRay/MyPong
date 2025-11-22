@@ -59,6 +59,9 @@ public:
 	SDL_FRect rect{};
 };
 
+static constexpr int PADDLE_WIDTH = 20;
+static constexpr int PADDLE_HEIGHT = 100;
+
 class Paddle
 {
 public:
@@ -79,5 +82,5 @@ public:
 	}
 
 	Vec2 position;
-	SDL_Rect rect{};
+	SDL_FRect rect{};
 };
