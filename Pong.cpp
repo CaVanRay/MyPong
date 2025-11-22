@@ -1,4 +1,5 @@
 #include <SDL3/SDL.h>
+#include "PongClasses.h"
 
 const int WINDOW_WIDTH = 1280;
 const int WINDOW_HEIGHT = 720;
@@ -10,6 +11,10 @@ int main()
 
 	SDL_Window* window = SDL_CreateWindow("Pong", WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
+
+	// Create the ball
+	Ball ball(
+		Vec2((WINDOW_WIDTH / 2.0f) - (BALL_WIDTH / 2.0f), (WINDOW_HEIGHT / 2.0f) - (BALL_WIDTH / 2.0f)));
 
 	// Game logic
 	{
