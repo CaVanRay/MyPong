@@ -58,3 +58,8 @@ public:
 	Vec2 position;
 	SDL_FRect rect{};
 };
+
+class Paddle
+{
+
+};
