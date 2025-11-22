@@ -46,6 +46,9 @@ int main()
 				if (y % 5)
 				{
 					SDL_RenderDrawPoint(renderer, WINDOW_WIDTH / 2, y);
+				}
+			}
+			
 			// Present the backbuffer
 			SDL_RenderPresent(renderer);
 		}
