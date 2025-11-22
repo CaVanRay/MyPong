@@ -16,6 +16,13 @@ int main()
 	Ball ball(
 		Vec2((WINDOW_WIDTH / 2.0f) - (BALL_WIDTH / 2.0f), (WINDOW_HEIGHT / 2.0f) - (BALL_WIDTH / 2.0f)));
 
+	// Create the paddles
+	Paddle paddleOne(
+		Vec2(50.0f, (WINDOW_HEIGHT / 2.0f) - (PADDLE_HEIGHT / 2.0f)));
+
+	Paddle paddleTwo(
+		Vec2(WINDOW_WIDTH - 50.0f, (WINDOW_HEIGHT / 2.0F) - (PADDLE_HEIGHT / 2.0F)));
+
 	// Game logic
 	{
 		bool running = true;
