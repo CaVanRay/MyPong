@@ -41,6 +41,8 @@ int main()
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			
 			// Draw the net
+			for (int y = 0; y < WINDOW_HEIGHT; ++y)
+			{
 
 			// Present the backbuffer
 			SDL_RenderPresent(renderer);
