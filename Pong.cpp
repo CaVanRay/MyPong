@@ -40,8 +40,7 @@ int main()
 			// Set the draw color to be white
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			
-			// Rendering will happen here
-			//
+			// Draw the net
 
 			// Present the backbuffer
 			SDL_RenderPresent(renderer);
