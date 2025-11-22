@@ -70,4 +70,14 @@ public:
 		rect.w = PADDLE_WIDTH;
 		rect.h = PADDLE_HEIGHT;
 	}
+
+	void Draw(SDL_Renderer* renderer)
+	{
+		rect.y = static_cast<int>(position.y);
+
+		SDL_RenderFillRect(renderer, &rect);
+	}
+
+	Vec2 position;
+	SDL_Rect rect{};
 };
