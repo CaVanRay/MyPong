@@ -8,7 +8,7 @@ int main()
 	// Initialize SDL components
 	SDL_Init(SDL_INIT_VIDEO);
 
-	SDL_Window* window = SDL_CreateWindow("Pong", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	SDL_Window* window = SDL_CreateWindow("Pong", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 
 	// Game logic
