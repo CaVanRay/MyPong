@@ -56,5 +56,5 @@ public:
 	}
 
 	Vec2 position;
-	SDL_Rect rect{};
+	SDL_FRect rect{};
 };
