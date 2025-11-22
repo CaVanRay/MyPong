@@ -35,4 +35,7 @@ public:
 const int BALL_WIDTH = 15;
 const int BALL_HEIGHT = 15;
 
-class 
+class Ball
+{
+
+};
