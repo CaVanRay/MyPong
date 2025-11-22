@@ -37,7 +37,9 @@ int main()
 			SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
 			SDL_RenderClear(renderer);
 
-			//
+			// Set the draw color to be white
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+			
 			// Rendering will happen here
 			//
 
