@@ -54,6 +54,9 @@ int main()
 				}
 			}
 			
+			// Draw the ball
+			ball.Draw(renderer);
+
 			// Present the backbuffer
 			SDL_RenderPresent(renderer);
 		}
