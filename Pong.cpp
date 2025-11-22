@@ -43,7 +43,8 @@ int main()
 			// Draw the net
 			for (int y = 0; y < WINDOW_HEIGHT; ++y)
 			{
-
+				if (y % 5)
+				{
 			// Present the backbuffer
 			SDL_RenderPresent(renderer);
 		}
