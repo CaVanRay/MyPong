@@ -43,7 +43,7 @@ int main()
 			// Draw the net
 			for (int y = 0; y < WINDOW_HEIGHT; ++y)
 			{
-				if (y % 5)
+				if (y % 5 == 0)
 				{
 					SDL_RenderDrawPoint(renderer, WINDOW_WIDTH / 2, y);
 				}
