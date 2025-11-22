@@ -64,6 +64,10 @@ int main()
 			// Draw the ball
 			ball.Draw(renderer);
 
+			// Draw the paddles
+			paddleOne.Draw(renderer);
+			paddleTwo.Draw(renderer);
+
 			// Present the backbuffer
 			SDL_RenderPresent(renderer);
 		}
