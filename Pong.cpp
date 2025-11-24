@@ -1,4 +1,5 @@
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include "PongClasses.h"
 
 const int WINDOW_WIDTH = 1280;
@@ -8,9 +9,13 @@ int main()
 {
 	// Initialize SDL components
 	SDL_Init(SDL_INIT_VIDEO);
+	TTF_Init();
 
 	SDL_Window* window = SDL_CreateWindow("Pong", WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
+
+	// Initialize the font
+	TTF_Font* scoreFont = TTF_OpenFont("DejavuSansMono.ttf", 40);
 
 	// Create the ball
 	Ball ball(
@@ -76,6 +81,8 @@ int main()
 	// Cleanup
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	TTF_CloseFont(scoreFont);
+	TTF_Quit();
 	SDL_Quit();
 	
 	return 0;
