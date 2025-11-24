@@ -1,4 +1,5 @@
 #pragma once
+#include <cstring> // for strlen
 
 class Vec2
 {
@@ -91,7 +92,7 @@ public:
 	PlayerScore(Vec2 position, SDL_Renderer* renderer, TTF_Font* font) :renderer(renderer), font(font)
 	{
 		
-		surface = TTF_RenderText_Solid(font, "0", SDL_Color{ 255,255,255,255 });
+		surface = TTF_RenderText_Solid(font, "0", strlen("0"), SDL_Color{255,255,255,255});
 		texture = SDL_CreateTextureFromSurface(renderer, surface);
 
 		float width, height;
