@@ -108,5 +108,8 @@ public:
 		SDL_DestroyTexture(texture);
 	}
 
-
+	void Draw()
+	{
+		SDL_RenderCopy(renderer, texture, nullptr, &rect);
+	}
 };
