@@ -17,6 +17,11 @@ int main()
 	// Initialize the font
 	TTF_Font* scoreFont = TTF_OpenFont("DejavuSansMono.ttf", 40);
 
+	// Create the player score text fields
+	PlayerScore playerOneScoreText(Vec2(WINDOW_WIDTH / 4, 20), renderer, scoreFont, ScoreColor);
+
+	PlayerScore playerTwoScoreText(Vec2(3 * WINDOW_WIDTH / 4, 20) renderer, scoreFont, ScoreColor);
+
 	// Create the ball
 	Ball ball(
 		Vec2((WINDOW_WIDTH / 2.0f) - (BALL_WIDTH / 2.0f), (WINDOW_HEIGHT / 2.0f) - (BALL_WIDTH / 2.0f)));
@@ -72,6 +77,9 @@ int main()
 			// Draw the paddles
 			paddleOne.Draw(renderer);
 			paddleTwo.Draw(renderer);
+
+			// Display the scores
+
 
 			// Present the backbuffer
 			SDL_RenderPresent(renderer);
