@@ -79,7 +79,8 @@ int main()
 			paddleTwo.Draw(renderer);
 
 			// Display the scores
-
+			playerOneScoreText.Draw();
+			playerTwoScoreText.Draw();
 
 			// Present the backbuffer
 			SDL_RenderPresent(renderer);
