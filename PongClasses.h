@@ -89,7 +89,7 @@ public:
 class PlayerScore
 {
 public:
-	PlayerScore(Vec2 position, SDL_Renderer* renderer, TTF_Font* font) :renderer(renderer), font(font)
+	PlayerScore(Vec2 position, SDL_Renderer* renderer, TTF_Font* font, SDL_Color color) :renderer(renderer), font(font), color(color)
 	{
 		
 		surface = TTF_RenderText_Solid(font, "0", strlen("0"), SDL_Color{255,255,255,255});
