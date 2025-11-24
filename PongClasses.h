@@ -101,4 +101,12 @@ public:
 		rect.w = width;
 		rect.h = height;
 	}
+
+	~PlayerScore()
+	{
+		SDL_FreeSurface(surface);
+		SDL_DestroyTexture(texture);
+	}
+
+
 };
