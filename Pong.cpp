@@ -17,10 +17,12 @@ int main()
 	// Initialize the font
 	TTF_Font* scoreFont = TTF_OpenFont("DejavuSansMono.ttf", 40);
 
-	// Create the player score text fields
-	PlayerScore playerOneScoreText(Vec2(WINDOW_WIDTH / 4, 20), renderer, scoreFont, ScoreColor);
+	SDL_Color scoreColor = { 255, 255, 255, 255 };
 
-	PlayerScore playerTwoScoreText(Vec2(3 * WINDOW_WIDTH / 4, 20) renderer, scoreFont, ScoreColor);
+	// Create the player score text fields
+	PlayerScore playerOneScoreText(Vec2(WINDOW_WIDTH / 4, 20), renderer, scoreFont, scoreColor);
+
+	PlayerScore playerTwoScoreText(Vec2(3 * WINDOW_WIDTH / 4, 20), renderer, scoreFont, scoreColor);
 
 	// Create the ball
 	Ball ball(
