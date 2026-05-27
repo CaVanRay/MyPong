@@ -1,100 +1,169 @@
-#include <SDL3/SDL.h>
-#include <SDL3_ttf/SDL_ttf.h>
-#include "PongClasses.h"
+#include <SDL2/SDL.h>
+#include <iostream>
+#include <random>
+#include <ctime>
 
-const int WINDOW_WIDTH = 1280;
-const int WINDOW_HEIGHT = 720;
+int main() {
 
-int main() 
-{
-	// Initialize SDL components
-	SDL_Init(SDL_INIT_VIDEO);
-	TTF_Init();
+    // **************************************** WINDOW SETUP **************************************** 
 
-	SDL_Window* window = SDL_CreateWindow("Pong", WINDOW_WIDTH, WINDOW_HEIGHT, 0);
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
+    const int WINDOW_WIDTH = 640;
+    const int WINDOW_HEIGHT = 360;
 
-	// Initialize the font
-	TTF_Font* scoreFont = TTF_OpenFont("DejavuSansMono.ttf", 40);
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
+        return 1;
+    }
 
-	SDL_Color scoreColor = { 255, 255, 255, 255 };
+    SDL_Window* window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    if (!window) {
+        std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        return 1;
+    }
 
-	// Create the player score text fields
-	PlayerScore playerOneScoreText(Vec2(WINDOW_WIDTH / 4, 20), renderer, scoreFont, scoreColor);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
 
-	PlayerScore playerTwoScoreText(Vec2(3 * WINDOW_WIDTH / 4, 20), renderer, scoreFont, scoreColor);
+    // **************************************** GAME VARIABLES **************************************** 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> vertDist(-300.0f, 300.0f);
 
-	// Create the ball
-	Ball ball(
-		Vec2((WINDOW_WIDTH / 2.0f) - (BALL_WIDTH / 2.0f), (WINDOW_HEIGHT / 2.0f) - (BALL_WIDTH / 2.0f)));
+    bool running = true;
+    SDL_Event event;
 
-	// Create the paddles
-	Paddle paddleOne(
-		Vec2(50.0f, (WINDOW_HEIGHT / 2.0f) - (PADDLE_HEIGHT / 2.0f)));
+    SDL_Rect centerLine = { 950, 0, 1, 1200};
+    SDL_Rect pongBall = { 900, 550, 20, 20};
+    SDL_Rect leftPaddle = {20, 500, 20, 200}; 
+    SDL_Rect rightPaddle = {1880, 500, 20, 200};
 
-	Paddle paddleTwo(
-		Vec2(WINDOW_WIDTH - 50.0f, (WINDOW_HEIGHT / 2.0F) - (PADDLE_HEIGHT / 2.0F)));
+    // VELOCITIES: PIXELS PER SECOND
 
-	// Game logic
-	{
-		bool running = true;
+    float paddleVelocity = 500.0f;
+    float ballVertVelocity = 1000.0f;
+    float ballHorVelocity = 1000.0f;
 
-		// Continue looping and processing events until user exits
-		while (running) 
-		{
-			SDL_Event event;
-			while (SDL_PollEvent(&event))
-			{
-				if (event.type == SDL_EVENT_QUIT)
-				{
-					running = false;
-				}
-				else if (event.type == SDL_EVENT_KEY_DOWN)
-				{
-					if (event.key.key == SDLK_ESCAPE)
-					{
-						running = false;
-					}
-				}
-			}
-			// Clear the window to black
-			SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
-			SDL_RenderClear(renderer);
+    // TIMING VARIABLES
 
-			// Set the draw color to be white
-			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-			
-			// Draw the net
-			for (int y = 0; y < WINDOW_HEIGHT; ++y)
-			{
-				if (y % 5 == 0)
-				{
-					SDL_RenderPoint(renderer, WINDOW_WIDTH / 2, y);
-				}
-			}
-			
-			// Draw the ball
-			ball.Draw(renderer);
+    Uint64 lastTime = SDL_GetTicks64();
+    const int TARGET_FPS = 60;
+    const float FRAME_DELAY = 1000.0f / TARGET_FPS;
 
-			// Draw the paddles
-			paddleOne.Draw(renderer);
-			paddleTwo.Draw(renderer);
 
-			// Display the scores
-			playerOneScoreText.Draw();
-			playerTwoScoreText.Draw();
+    // **************************************** GAME LOOP **************************************** 
 
-			// Present the backbuffer
-			SDL_RenderPresent(renderer);
-		}
-	}
+    while (running) {
 
-	// Cleanup
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	TTF_CloseFont(scoreFont);
-	TTF_Quit();
-	SDL_Quit();
-	
-	return 0;
+        Uint64 frameStart = SDL_GetTicks64();
+        // 1. CALCULATE DELTA TIME (in seconds)
+        Uint64 currentTime = SDL_GetTicks64();
+        float deltaTime = (currentTime - lastTime) / 1000.0f;
+        lastTime = currentTime;
+        // Cap deltaTime to prevent huge jumps if lag occurs (e.g. debugging)
+        if (deltaTime > 0.05f) deltaTime = 0.05f;
+
+        while(SDL_PollEvent(&event)){
+            if(event.type == SDL_QUIT) running = false;
+        }
+
+        // getting window size to prevent from moving out of bounds
+        int windowWidth, windowHeight;
+        SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+
+    // **************************************** KEYBOARD INPUT **************************************** 
+
+        // Handle keyboard input
+        const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+
+        float moveStep = paddleVelocity * deltaTime;
+        if (keyboardState[SDL_SCANCODE_UP]) {
+             leftPaddle.y -= (int)moveStep;
+             rightPaddle.y -= (int)moveStep;
+        }
+        if (keyboardState[SDL_SCANCODE_DOWN]) {
+            leftPaddle.y += (int)moveStep;
+            rightPaddle.y += (int)moveStep;
+        }
+        if (keyboardState[SDL_SCANCODE_SPACE]) {
+            float boostStep = (paddleVelocity * 3.0f) * deltaTime;
+            if(keyboardState[SDL_SCANCODE_UP]){
+                leftPaddle.y -= (int)boostStep;
+                rightPaddle.y -= (int)boostStep;
+            }else if(keyboardState[SDL_SCANCODE_DOWN]){
+                leftPaddle.y += (int)boostStep;
+                rightPaddle.y += (int)boostStep;
+            }            
+        }
+        if (keyboardState[SDL_SCANCODE_ESCAPE]) {
+            running = false;
+        }
+
+        // **************************************** MOVEMENT **************************************** 
+
+        // [Clamp Paddles]
+        leftPaddle.y = std::max(0, std::min(leftPaddle.y, windowHeight - leftPaddle.h));
+        rightPaddle.y = std::max(0, std::min(rightPaddle.y, windowHeight - rightPaddle.h));
+
+        // this will effect ball only
+        pongBall.x += (int)(ballHorVelocity * deltaTime);
+        pongBall.y += (int)(ballVertVelocity * deltaTime);
+
+        if(SDL_HasIntersection(&pongBall, &leftPaddle)){
+            ballHorVelocity = 1000.4f;
+            ballVertVelocity = vertDist(gen);
+        }
+        if(SDL_HasIntersection(&pongBall, &rightPaddle)){
+            ballHorVelocity = -1000.0f;
+            ballVertVelocity = vertDist(gen);
+        }
+        if(pongBall.y <= 0 || pongBall.y + pongBall.h >= windowHeight){
+            ballVertVelocity = -ballVertVelocity;
+        }
+        if(pongBall.x < 0 || pongBall.x > windowWidth){
+            pongBall.x = windowWidth / 2 - 10;
+            pongBall.y = windowHeight / 2;
+            ballHorVelocity = (ballHorVelocity > 0) ? 1000.0f : -1000.0f;
+            ballVertVelocity = vertDist(gen);
+        }
+
+        leftPaddle.y = pongBall.y;
+        rightPaddle.y = pongBall.y;
+
+
+        // **************************************** RENDERING **************************************** 
+
+        // Clear to black and make background
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        // Change color to white and render center line, paddles, & ball
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderFillRect(renderer, &centerLine);
+        SDL_RenderFillRect(renderer, &pongBall);
+        SDL_RenderFillRect(renderer, &leftPaddle);
+        SDL_RenderFillRect(renderer, &rightPaddle);
+       
+
+        SDL_RenderPresent(renderer);
+
+        // **************************************** FRAME RATE LIMITING **************************************** 
+
+        Uint64 frameTime = SDL_GetTicks64() - frameStart;
+        if(frameTime < FRAME_DELAY){
+            SDL_Delay((Uint64)(FRAME_DELAY - frameTime));
+        }
+
+    }
+
+    // **************************************** CLEANUP **************************************** 
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return 0;
 }
