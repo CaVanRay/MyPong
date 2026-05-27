@@ -7,15 +7,12 @@ int main() {
 
     // **************************************** WINDOW SETUP **************************************** 
 
-    const int WINDOW_WIDTH = 640;
-    const int WINDOW_HEIGHT = 360;
-
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
         return 1;
     }
 
-    SDL_Window* window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    SDL_Window* window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920, 720, SDL_WINDOW_FULLSCREEN_DESKTOP);
     if (!window) {
         std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
         SDL_Quit();
@@ -38,10 +35,15 @@ int main() {
     bool running = true;
     SDL_Event event;
 
-    SDL_Rect centerLine = { 950, 0, 1, 1200};
-    SDL_Rect pongBall = { 900, 550, 20, 20};
-    SDL_Rect leftPaddle = {20, 500, 20, 200}; 
-    SDL_Rect rightPaddle = {1880, 500, 20, 200};
+
+    // getting window size to prevent from moving out of bounds
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+
+    SDL_Rect centerLine = { windowWidth / 2, 0, 1, windowHeight};
+    SDL_Rect pongBall = { windowWidth / 2, windowHeight / 2, 20, 20};
+    SDL_Rect leftPaddle = {20, windowHeight / 2, 20, 200}; 
+    SDL_Rect rightPaddle = {windowWidth - 40, windowHeight / 2, 20, 200};
 
     // VELOCITIES: PIXELS PER SECOND
 
@@ -71,10 +73,6 @@ int main() {
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT) running = false;
         }
-
-        // getting window size to prevent from moving out of bounds
-        int windowWidth, windowHeight;
-        SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
     // **************************************** KEYBOARD INPUT **************************************** 
 
