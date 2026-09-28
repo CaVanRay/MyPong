@@ -10,3 +10,9 @@ screenshot of current version:
 
 <img width="1920" height="1080" alt="pong" src="https://github.com/user-attachments/assets/a050b408-6497-4ec8-8dde-d4c1642406c9" />
 
+Next items to-do:
+
+[ ] - add changing music
+[ ] - add backgrounds
+[ ] - add level goals
+[ ] - add changing challenges
