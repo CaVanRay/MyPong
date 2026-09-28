@@ -12,7 +12,7 @@ screenshot of current version:
 
 Next items to-do:
 
-[ ] - add changing music
-[ ] - add backgrounds
-[ ] - add level goals
-[ ] - add changing challenges
+- [ ] - add changing music
+- [ ] - add backgrounds
+- [ ] - add level goals
+- [ ] - add changing challenges
